@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Top Songs Right Now</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #ADD8E6;
+        }
+
+        .top-border {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 10px 20px;
+            border-bottom: 2px solid #ADD8E6;
+        }
+
+        .top-border a {
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .main-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .main-content h1 {
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .song-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .song-item {
+            background-color: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .song-item button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ADD8E6;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .song-item button:hover {
+            background-color: #87CEEB;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-border">
+        <a href="index.html">Home</a>
+        <a href="put.html">Put Me On</a>
+    </div>
+
+    <div class="main-content">
+        <h1>My Top 10 Right Now!</h1>
+        <div class="song-list">
+            <div class="song-item">
+                <span>Song Name - Artist</span>
+                <div>
+                    <button onclick="playSong('https://open.spotify.com/embed/track/3tFed7YsjGnIfxeLEQwx3R')">Play</button>
+                    <button onclick="addToSpotify('https://open.spotify.com/track/3tFed7YsjGnIfxeLEQwx3R')">Add to Spotify</button>
+                    <button onclick="addToAppleMusic('https://music.apple.com/us/album/your-song-id')">Add to Apple Music</button>
+                </div>
+            </div>
+            
+            <!-- Add more song items as needed -->
+        </div>
+    </div>
+
+    <!-- Spotify Embed Container -->
+    <div id="spotify-player" style="text-align:center; margin-top: 20px;"></div>
+
+    <script>
+        function playSong(embedUrl) {
+            const player = document.getElementById('spotify-player');
+            player.innerHTML = `
+                <iframe style="border-radius:12px" 
+                        src="${embedUrl}" 
+                        width="300" height="80" frameBorder="0" 
+                        allowfullscreen="" 
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+                </iframe>
+            `;
+        }
+
+        function addToSpotify(url) {
+            window.open(url, '_blank');
+        }
+
+        function addToAppleMusic(url) {
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ListenToMyMusic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #ADD8E6; /* Baby blue */
+        }
+
+        .top-border {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 10px 20px;
+            border-bottom: 2px solid #ADD8E6;
+        }
+
+        .top-border a {
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .rounded-rectangle {
+            background-color: white;
+            border-radius: 15px;
+            width: 300px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+                .album-cover {
+            width: 150px; /* Adjust the size as needed */
+            height: 150px;
+            border-radius: 10px;
+            background-size: cover;
+            background-position: center;
+            margin: 0 auto 10px; /* Center the cover and add spacing */
+            background-image: url('your-album-cover.jpg'); /* Replace with your image path */
+        }
+
+
+        .buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .buttons button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ADD8E6;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .buttons button:hover {
+            background-color: #87CEEB;
+        }
+
+            .spotify-button, .apple-music-button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 5px;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="top-border">
+        <span>ListenToMyMusic</span>
+        <div>
+            <a href="top.html">My Top Songs Right Now!</a>
+            <a href="put.html">Put Me On</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="rounded-rectangle">
+            <div class="album-cover" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/5/5b/Chromakopia_CD_cover.jpg');"></div>
+
+            <iframe style="border-radius:12px" 
+        src="https://open.spotify.com/embed/track/3tFed7YsjGnIfxeLEQwx3R?utm_source=generator" 
+        width="300" height="80" frameBorder="0" 
+        allowfullscreen="" 
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+</iframe>
+
+<iframe style="border-radius:12px" 
+        src= "https://embed.music.apple.com/us/album/sticky-feat-glorilla-sexyy-red-lil-wayne/1776500452?i=1776500460" 
+        width="300" height="80" frameBorder="0" 
+        allowfullscreen="" 
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+</iframe>
+
+            <!-- Add more rectangles as needed -->
+        </div>
+    </div>
+</body>
+</html>

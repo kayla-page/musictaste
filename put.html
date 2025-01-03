@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Put Me On</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #ADD8E6;
+        }
+
+        .top-border {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 10px 20px;
+            border-bottom: 2px solid #ADD8E6;
+        }
+
+        .top-border a {
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .main-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .main-content h1 {
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .submission-box {
+            background-color: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .submission-box input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .submission-box button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ADD8E6;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .submission-box button:hover {
+            background-color: #87CEEB;
+        }
+
+        .comments {
+            margin-top: 30px;
+        }
+
+        .comment {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 10px auto;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none; /* Default: Hidden for regular users */
+        }
+
+        .delete-button.admin {
+            display: inline-block; /* Shown for admin only */
+        }
+
+        .delete-button:hover {
+            background-color: #e63939;
+        }
+
+        .rating {
+            display: flex;
+            gap: 5px;
+        }
+
+        .star {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .star.selected {
+            color: gold;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-border">
+        <a href="index.html">Home</a>
+        <a href="top.html">My Top Songs Right Now!</a>
+    </div>
+
+    <div class="main-content">
+        <h1>Put Me On</h1>
+        <div class="submission-box">
+            <input type="text" id="songInput" placeholder="Enter your song here...">
+            <button id="submitButton">Submit</button>
+        </div>
+
+        <div class="comments" id="commentsSection">
+            <!-- Comments will be loaded dynamically -->
+        </div>
+    </div>
+
+    <script>
+        const isAdmin = true; // Set to `false` for regular users
+    
+        const submitButton = document.getElementById('submitButton');
+        const songInput = document.getElementById('songInput');
+        const commentsSection = document.getElementById('commentsSection');
+    
+        // Load comments from localStorage
+        function loadComments() {
+            const savedComments = JSON.parse(localStorage.getItem('comments')) || [];
+            savedComments.forEach((comment) => addComment(comment.text, comment.rating));
+        }
+    
+        // Save comments and ratings to localStorage
+        function saveComments() {
+            const allComments = Array.from(document.querySelectorAll('.comment')).map((commentElement) => {
+                const songText = commentElement.querySelector('span').textContent;
+                const rating = commentElement.querySelector('.rating .selected')?.length || 0;
+                return { text: songText, rating: rating };
+            });
+            localStorage.setItem('comments', JSON.stringify(allComments));
+        }
+    
+        // Add a new comment to the DOM and attach delete functionality
+        function addComment(commentText, rating = 0) {
+            const newComment = document.createElement('div');
+            newComment.classList.add('comment');
+            newComment.innerHTML = `
+                <span>${commentText}</span>
+                <div class="rating">
+                    ${[1, 2, 3, 4, 5].map((i) => `
+                        <span class="star ${i <= rating ? 'selected' : ''}" data-value="${i}">★</span>
+                    `).join('')}
+                </div>
+                <button class="delete-button ${isAdmin ? 'admin' : ''}">Delete</button>
+            `;
+    
+            // Attach delete functionality if admin
+            const deleteButton = newComment.querySelector('.delete-button');
+            if (isAdmin) {
+                deleteButton.addEventListener('click', () => {
+                    commentsSection.removeChild(newComment);
+                    saveComments();
+                });
+            }
+    
+            // Add rating functionality
+            const stars = newComment.querySelectorAll('.star');
+            stars.forEach((star) => {
+                star.addEventListener('click', () => {
+                    // Remove the 'selected' class from all stars
+                    stars.forEach((s) => s.classList.remove('selected'));
+                    // Add the 'selected' class to the clicked star and all previous stars
+                    const clickedValue = parseInt(star.getAttribute('data-value'));
+                    for (let i = 0; i < clickedValue; i++) {
+                        stars[i].classList.add('selected');
+                    }
+                    saveComments(); // Save to localStorage after rating
+                });
+            });
+    
+            commentsSection.appendChild(newComment);
+        }
+    
+        // Add new comment when submit is clicked
+        submitButton.addEventListener('click', () => {
+            const userInput = songInput.value.trim();
+    
+            if (userInput) {
+                addComment(`User: ${userInput}`);
+                saveComments();
+                songInput.value = ''; // Clear input field
+            } else {
+                alert('Please enter a song before submitting.');
+            }
+        });
+    
+        // Load comments on page load
+        document.addEventListener('DOMContentLoaded', loadComments);
+    </script>
+    
+</body>
+</html>
+
